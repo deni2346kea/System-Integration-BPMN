@@ -1,0 +1,59 @@
+
+<definitions
+        xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns="http://locations.com/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns="http://schemas.xmlsoap.org/wsdl/"
+        targetNamespace="http://locations.com/"
+        xmlns:ns="http://locations.com/types/"
+        name="LocationsImplService">
+    <types>
+    <xsd:schema elementFormDefault="qualified"
+                targetNamespace="http://locations.com/types/"
+                xmlns="http://locations.com/types/">
+        <xsd:complexType name="locationResponse">
+            <xsd:sequence>
+                <xsd:element name="lat" type="xsd:double"/>
+                <xsd:element name="lon" type="xsd:double"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:schema>
+    </types>
+    <message name="findCoordinates">
+        <part name="arg0" type="xsd:string" />
+    </message>
+    <message name="findCoordinatesResponse">
+        <part name="location" type="ns:locationResponse" />
+    </message>
+    <portType name="Locations">
+        <operation name="FindCoordinates" parameterOrder="arg0">
+            <input
+                    wsam:Action="http://locations.com/Locations/findRequest"
+                    message="tns:findCoordinates" />
+            <output
+                    wsam:Action="http://countries.com/Countries/findResponse"
+                    message="tns:findCoordinatesResponse" />
+        </operation>
+    </portType>
+
+    <binding name="LocationsImplPortBinding" type="tns:Locations">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"
+                      style="rpc" />
+        <operation name="FindCoordinates">
+            <soap:operation soapAction="http://locations.com/#Find" />
+            <input>
+                <soap:body use="literal" namespace="http://locations.com/" />
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://locations.com/" />
+            </output>
+        </operation>
+    </binding>
+    <service name="LocationsImplService">
+        <port name="LocationsImplPort" binding="tns:LocationsImplPortBinding">
+            <soap:address location="http://127.0.0.1:8000/locationsServer" />
+        </port>
+    </service>
+
+</definitions>

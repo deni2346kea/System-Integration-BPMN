@@ -1,0 +1,269 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- Requesting Lat & Lon  -->
+<div class="first">
+
+    <fieldset>
+        <legend>We are delighted to have you here to participate and share our RE-MANDATORY assignment</legend>
+        <ul class="list-reset">
+            <li class="form-field">
+                <label for="citySearch">City Name</label>
+                <input type="text" id="citySearch" placeholder="e.g. Rochester, NY">
+            </li>
+
+            <li class="form-field">
+                <input type="checkbox" id="celsius">
+                <label for="celsius">You agree to our terms</label>
+            </li>
+        </ul>
+    </fieldset>
+
+    <button id="getUser">Get weather</button>
+    <!--</form>-->
+</div>
+
+
+
+<div id="third">
+
+</div>
+
+
+<!-- Trigger/Open The Modal -->
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+    <!-- Modal content -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <span class="close">&times;</span>
+            <h2>The Actual Weather Forecast</h2>
+        </div>
+        <div class="modal-body">
+            <p id="cityN">City Name:</p>
+            <p id="hum">Humidity:</p>
+            <p id="temp">Temp:</p>
+            <p id="press">Pressure:</p>
+            <p id="wind">Wind:</p>
+            <img src="../media/weather.png" >
+        </div>
+        <div class="modal-footer">
+            <h3>Do you need any hotel in this destination?</h3>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="js/script.js"></script>
+<!-- <script type="text/javascript">
+'use strict';
+
+const soap = require('soap');
+var url = 'http://127.0.0.1:8008/locationsServer?wsdl';
+
+soap.createClient(url, function(err, client) {
+         client.findCoordinates({
+             arg0 : "Copenhagen"
+         }, function(err, result)
+         {
+            console.log(result);
+         });
+});
+
+
+/********************************/
+/*  jQuery CLICK EVENTS BELLOW  */
+/********************************/
+
+$("#getUser").click(() => {
+  getUsers();
+});
+$('#addUser').click(() => {
+  addUser();
+});
+$('#editUser').click(() => {
+  editUser();
+});
+$('#deleteUser').click(() => {
+  deleteUser();
+});
+
+/********************************/
+/*      FUNCTIONS BELLOW        */
+/********************************/
+
+// ADD USER
+async function addUser() {
+  const newUser = {
+    name: 'testName',
+    surname: 'testSurname',
+    username: 'testUserName',
+    password: 'testPassword'
+  };
+    $.ajax({
+        type: "POST",
+        data: newUser,
+        dataType: "json",
+        url: "http://localhost:3000/api/users/",
+        success: (data) => {
+            console.log(data);
+        }
+    });
+}
+
+// get geo coordinates, soap
+async function getCoordinates() {
+//    get smth from soap server
+    if (true) {
+        getWeather(lat, lon);
+    }
+}
+
+async function getWeather(lat, lon) {
+    const weather ={
+        lat: lat,
+        lon: lon
+    };
+    $.ajax({
+        type: "POST",
+        data: weather,
+        dataType: "json",
+        url: "http://localhost:3000/api/weather/",
+        success: (data) => {
+        console.log(data);
+}
+})
+}
+
+// GET ALL USERS
+async function getUsers() {
+  $.getJSON("http://localhost:3000/api/users/",
+      (data) => {
+          console.log(data);
+      });
+
+
+  const weather ={
+      lat: 35,
+      lon: 139
+  };
+  $.ajax({
+      type: "POST",
+      data: weather,
+      dataType: "json",
+      url: "http://localhost:3000/api/weather/",
+      success: (data) => {
+          console.log(data);
+  }
+  })
+}
+
+// EDIT EXISTING USER
+async function editUser() {
+  const user = {
+    id: 13,
+    name: 'changedTestName'
+  };
+    $.ajax({
+        type: "PATCH",
+        data: user,
+        dataType: "json",
+        url: "http://localhost:3000/api/users/",
+        success: (data) => {
+            console.log(data);
+        }
+    });
+
+    // const user1 = {
+    //   id: 13,
+    //   name: 'changedTestName',
+    //   surname: 'changedTestSurname',
+    //   username: 'changedTestUserName',
+    //   password: 'changedTestPassword'
+    // };
+    //   $.ajax({
+    //       type: "PATCH",
+    //       data: user1,
+    //       dataType: "json",
+    //       url: "http://localhost:3000/api/users/",
+    //       success: (data) => {
+    //           console.log(data);
+    //       }
+    //   });
+}
+
+// DELETES A USER
+async function deleteUser() {
+  $.ajax({
+      type: "DELETE",
+      url: "http://localhost:3000/api/users/13",
+      success: (data) => {
+          console.log(data);
+      }
+  });
+}
+
+function hideFunction() {
+    var x = document.getElementById("first");
+    if (x.style.display === "none") {
+
+    } else {
+        x.style.display = "none";
+    }
+}
+
+
+function hide() {
+    var x = document.getElementById("second");
+    if (x.style.display === "none") {
+
+    } else {
+        x.style.display = "none";
+    }
+
+}
+
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById("getUser");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+    modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+
+</script> -->
+</body>
+</html>
